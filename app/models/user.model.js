@@ -44,5 +44,17 @@ class userModel {
             callback({ message: "Error while Storing User Details in DataBase" }, null);
         });
     };
+
+    loginUser = (loginData, callBack) => {
+        user.findOne({ email: loginData.email, password:loginData.password }, (error, data) => {
+            if (error) {
+                return callBack(error, null);
+            } else if (!data) {
+                return callBack("Invalid Credential", null);
+            } else {
+                return callBack(null, data);
+            }
+        });
+    }
 }
 module.exports = new userModel();

@@ -4,9 +4,19 @@ class userService {
     registerUser = (user, callback) => {
         userModel.registerUser(user, (err, data) => {
             if (err) {
-                callback(err, null);
+                return callback(err, null);
             } else {
-                callback(null, data);
+                return callback(null, data);
+            }
+        });
+    }
+
+    userLogin = (InfoLogin, callback) => {
+        userModel.loginUser(InfoLogin, (error, data) => {
+            if (error) {
+                return callback(error, null);
+            } else {
+                return callback(null, data);
             }
         });
     }
