@@ -23,7 +23,26 @@ const UserSchema = new mongoose.Schema(
 },
     {
         timestamps: true,
-    },
-    );
+    })
 
-module.exports = mongoose.model('user', UserSchema)
+const user = mongoose.model('user', UserSchema);
+
+class userModel {
+
+    registerUser = (userDetails, callback) => {
+        const newUser = new user();
+        newUser.firstName = userDetails.firstName;
+        newUser.lastName = userDetails.lastName;
+        newUser.email = userDetails.email;
+        newUser.password = userDetails.password;
+
+        newUser.save()
+        .then(data => {
+            callback(null, data);
+        })
+        .catch(err => {
+            callback({ message: "Error while Storing User Details in DataBase" }, null);
+        });
+    };
+}
+module.exports = new userModel();
