@@ -26,9 +26,9 @@ class Controller {
                     });
                 } else {
                     return res.status(200).json({
-                        success: true, 
+                        success: true,
                         message: "User Registered",
-                        data: data,
+                        data,
                     });
                 }
             });
@@ -65,18 +65,18 @@ class Controller {
                 return res.status(200).json({
                 success: true,
                 message: 'User logged in successfully',
-                data: data,
-                token: token,
+                data,
+                token,
                 });
             });
         } catch (error) {
             return res.status(500).json({
                 success: false,
-                message: 'Error while Login',error,
+                message: 'Error while Login',
                 data: null
             });
-        };
+        }
     };
-};
+}
 
 module.exports = new Controller();

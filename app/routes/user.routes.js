@@ -1,4 +1,4 @@
-const user = require('../controllers/user.controller.js');
+const user = require('../controllers/user.controller');
 
 module.exports = (app) => {
     app.post('/register', user.register);

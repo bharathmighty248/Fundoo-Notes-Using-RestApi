@@ -25,12 +25,12 @@ const UserSchema = new mongoose.Schema(
 },
     {
         timestamps: true,
-    })
+    }
+    )
 
 const user = mongoose.model('user', UserSchema);
 
 class userModel {
-
     registerUser = (userDetails, callback) => {
         const newUser = new user();
         newUser.firstName = userDetails.firstName;
@@ -52,7 +52,6 @@ class userModel {
                 return callback(error, null);
             }
         });
-        
     };
 
     loginUser = (loginData, callBack) => {
