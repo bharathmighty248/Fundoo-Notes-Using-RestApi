@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+const bcryptPassword = require('../../utilities/bcrypt.hash');
 
 const UserSchema = new mongoose.Schema(
     {
@@ -36,23 +38,37 @@ class userModel {
         newUser.email = userDetails.email;
         newUser.password = userDetails.password;
 
-        newUser.save()
-        .then(data => {
-            callback(null, data);
-        })
-        .catch(err => {
-            callback({ message: "Error while Storing User Details in DataBase" }, null);
+        bcryptPassword.hashpassword(userDetails.password, (error, data) => {
+            if (data) {
+              newUser.password = data;
+              newUser.save()
+                .then(data => {
+                    return callback(null, data);
+                })
+                .catch(err => {
+                    return callback(err, null);
+                });
+            } else {
+                return callback(error, null);
+            }
         });
+        
     };
 
     loginUser = (loginData, callBack) => {
-        user.findOne({ email: loginData.email, password:loginData.password }, (error, data) => {
-            if (error) {
-                return callBack(error, null);
+        user.findOne({ email: loginData.email }, (error, data) => {
+            if (data) {
+                bcrypt.compare(loginData.password, data.password, (error,validate) => {
+                    if (!validate) {
+                        return callBack(error + 'Invalid Password', null);
+                    } else {
+                        return callBack(null, data);
+                    }
+                })
             } else if (!data) {
-                return callBack("Invalid Credential", null);
+                return callBack(error + "Invalid Credential", null);
             } else {
-                return callBack(null, data);
+                return callBack(error, null);
             }
         });
     }
