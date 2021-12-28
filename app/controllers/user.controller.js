@@ -1,5 +1,6 @@
 const userService = require('../service/user.service');
 const joiValidation = require('../../utilities/validation');
+const jwt = require('../../utilities/jwt.token');
 
 class Controller {
     register = (req, res) => {
@@ -60,10 +61,12 @@ class Controller {
                         message: 'Unable to login. Please enter correct info',
                     });
                 }
+                const token = jwt.getToken(data);
                 return res.status(200).json({
                 success: true,
                 message: 'User logged in successfully',
-                data: data
+                data: data,
+                token: token,
                 });
             });
         } catch (error) {
