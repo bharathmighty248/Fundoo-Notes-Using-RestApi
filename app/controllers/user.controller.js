@@ -1,4 +1,5 @@
 const userService = require('../service/user.service');
+const joiValidation = require('../../utilities/validation');
 
 class Controller {
     register = (req, res) => {
@@ -9,7 +10,13 @@ class Controller {
                 email: req.body.email,
                 password: req.body.password
             };
-
+            const Validation = joiValidation.authRegister.validate(user);
+            if (Validation.error) {
+                return res.status(400).send({
+                    success: false,
+                    message: "Wrong Input"
+                })
+            }
             userService.registerUser(user, (error, data) => {
                 if (error) {
                     return res.status(409).json({
@@ -39,6 +46,13 @@ class Controller {
                 email: req.body.email,
                 password: req.body.password
             };
+            const Validation = joiValidation.authLogin.validate(userLoginInfo);
+            if (Validation.error) {
+                return res.status(400).send({
+                    success: false,
+                    message: "Wrong Input"
+                })
+            }
             userService.userLogin(userLoginInfo, (error, data) => {
                 if (error) {
                     return res.status(401).json({
