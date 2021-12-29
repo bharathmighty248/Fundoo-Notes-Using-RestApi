@@ -46,6 +46,7 @@ module.exports = {
     'arrow-parens': 0,
     'no-shadow': 0,
     'prefer-template':0,
-    'prefer-regex-literals': 0
+    'prefer-regex-literals': 0,
+    'no-empty-pattern': 0
   },
 };
