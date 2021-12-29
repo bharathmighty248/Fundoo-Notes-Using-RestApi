@@ -30,6 +30,16 @@ class userService {
             }
         });
     }
+
+    resetpassword = (user, callback) => {
+        userModel.resetpassword(user, (err, data) => {
+            if (err) {
+                return callback(err, null);
+            } else {
+                return callback(null, data);
+            }
+        });
+    }
 }
 
 module.exports = new userService();

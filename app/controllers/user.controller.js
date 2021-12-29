@@ -35,7 +35,7 @@ class Controller {
         } catch (error) {
             return res.status(500).json({
                 success: false,
-                message: "Error While Registering",
+                message: "Internal error While Registering",
                 data: null,
             });
         }
@@ -72,7 +72,7 @@ class Controller {
         } catch (error) {
             return res.status(500).json({
                 success: false,
-                message: 'Error while Login',
+                message: 'Internal error while Login',
                 data: null
             });
         }
@@ -100,11 +100,47 @@ class Controller {
         } catch (error) {
             return res.status(500).json({
                 success: false,
-                message: "Error While sending reset code to your email",
+                message: "Internal error While sending reset code to your email",
                 data: null,
             });
         }
     }
+
+    resetpassword = (req, res) => {
+        try {
+            const resetInfo = {
+                email: req.body.email,
+                resetcode: req.body.resetcode,
+                newPassword: req.body.newPassword
+            };
+            const Validation = joiValidation.authResetPassword.validate(resetInfo);
+            if (Validation.error) {
+                return res.status(400).send({
+                    success: false,
+                    message: "Wrong Input"
+                })
+            }
+            userService.resetpassword(resetInfo, (error, data) => {
+                if (error) {
+                    return res.status(401).json({
+                        success: false,
+                        message: 'Unable to reset password. Please enter correct info',
+                    });
+                } else if (data) {
+                    return res.status(200).json({
+                        success: true,
+                        message: 'password reset successfull',
+                    });
+                }
+            });
+        } catch (error) {
+            return res.status(500).json({
+                success: false,
+                message: 'Internal error while reset password',
+                data: null
+            });
+        }
+    };
 }
 
 module.exports = new Controller();

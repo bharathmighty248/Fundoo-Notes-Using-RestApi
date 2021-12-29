@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const bcryptPassword = require('../../utilities/bcrypt.hash');
 const nodemailer = require('../../utilities/nodeMailer');
+const resetcodemodel = require('./resetcode.model');
 
 const UserSchema = new mongoose.Schema(
     {
@@ -89,6 +90,28 @@ class userModel {
                 return callBack(error, null);
             }
         });
+    }
+
+    resetpassword = (Data, callBack) => {
+        resetcodemodel.findOne({ email: Data.email, resetcode: Data.resetcode }, (error,data) => {
+            if (data) {
+                bcryptPassword.hashpassword(Data.newPassword, (error, data) => {
+                    if (data) {
+                        user.updateOne({ email: Data.email }, { $set: { password: data } })
+                            .then(data => {
+                                return callBack(null, data);
+                            })
+                            .catch(err => {
+                                return callBack(err, null);
+                            });
+                    } else {
+                        return callBack(error, null);
+                    }
+                });
+            } else {
+                return callBack(error, null);
+            }
+        })
     }
 }
 module.exports = new userModel();
