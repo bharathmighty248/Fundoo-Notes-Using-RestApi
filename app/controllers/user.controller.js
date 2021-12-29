@@ -77,6 +77,34 @@ class Controller {
             });
         }
     };
+
+    forgotpassword = (req, res) => {
+        try {
+            const user = {
+                email: req.body.email,
+            };
+            userService.forgotpassword(user, (error, data) => {
+                if (error) {
+                    return res.status(404).json({
+                        success: false,
+                        message: "User doesn't exist",
+                    });
+                } else {
+                    return res.status(200).json({
+                        success: true,
+                        message: "Reset code sent to your registered email..",
+                        data,
+                    });
+                }
+            });
+        } catch (error) {
+            return res.status(500).json({
+                success: false,
+                message: "Error While sending reset code to your email",
+                data: null,
+            });
+        }
+    }
 }
 
 module.exports = new Controller();

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const bcryptPassword = require('../../utilities/bcrypt.hash');
+const nodemailer = require('../../utilities/nodeMailer');
 
 const UserSchema = new mongoose.Schema(
     {
@@ -26,7 +27,7 @@ const UserSchema = new mongoose.Schema(
     {
         timestamps: true,
     }
-    )
+)
 
 const user = mongoose.model('user', UserSchema);
 
@@ -64,6 +65,24 @@ class userModel {
                         return callBack(null, data);
                     }
                 })
+            } else if (!data) {
+                return callBack(error + "Invalid Credential", null);
+            } else {
+                return callBack(error, null);
+            }
+        });
+    }
+
+    forgotpassword = (data, callBack) => {
+        user.findOne({ email: data.email }, (error, data) => {
+            if (data) {
+                nodemailer.sendEmail(data.email, (err, data) => {
+                    if (err) {
+                        return callBack(err, null);
+                    } else {
+                        return callBack(null, data)
+                    }
+                });
             } else if (!data) {
                 return callBack(error + "Invalid Credential", null);
             } else {
