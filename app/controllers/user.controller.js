@@ -102,7 +102,7 @@ class Controller {
         }
     }
 
-    resetpassword = (req, res) => {
+    resetpassword = async (req, res) => {
         try {
             const resetInfo = {
                 email: req.body.email,
@@ -113,27 +113,24 @@ class Controller {
             if (Validation.error) {
                 return res.status(400).send({
                     success: false,
-                    message: "Wrong Input"
+                    message: "Wrong Input format"
                 })
             }
-            userService.resetpassword(resetInfo, (error, data) => {
-                if (error) {
-                    return res.status(401).json({
-                        success: false,
-                        message: 'Unable to reset password. Please enter correct info',
-                    });
-                } else if (data) {
-                    return res.status(200).json({
-                        success: true,
-                        message: 'password reset successfull',
-                    });
-                }
+            const isReset = await userService.resetpassword(resetInfo);
+            if (!isReset) {
+                return res.status(401).json({
+                    success: false,
+                    message: 'Unable to reset password. Please enter correct info'
+                });
+            }
+            return res.status(200).json({
+                success: true,
+                message: 'password reset successfull'
             });
         } catch (error) {
             return res.status(500).json({
                 success: false,
-                message: 'Internal error while reset password',
-                data: null
+                message: 'Internal error while reset password'
             });
         }
     };

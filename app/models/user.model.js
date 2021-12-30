@@ -83,26 +83,17 @@ class userModel {
         return false;
     }
 
-    resetpassword = (Data, callBack) => {
-        resetcodemodel.findOne({ email: Data.email, resetcode: Data.resetcode }, (error,data) => {
-            if (data) {
-                bcryptPassword.hashpassword(Data.newPassword, (error, data) => {
-                    if (data) {
-                        user.updateOne({ email: Data.email }, { $set: { password: data } })
-                            .then(data => {
-                                return callBack(null, data);
-                            })
-                            .catch(err => {
-                                return callBack(err, null);
-                            });
-                    } else {
-                        return callBack(error, null);
-                    }
-                });
-            } else {
-                return callBack(error, null);
+    resetpassword = async (Data) => {
+        const codepresent = await resetcodemodel.findOne({ email: Data.email, resetcode: Data.resetcode });
+        if (codepresent) {
+            const hash = await bcryptPassword.hashpassword(Data.newPassword);
+            const success = await user.findOneAndUpdate({ email: Data.email }, { $set: { password: hash } });
+            if (success) {
+                return true;
             }
-        })
+            return false;
+        }
+        return false;
     }
 }
 module.exports = new userModel();

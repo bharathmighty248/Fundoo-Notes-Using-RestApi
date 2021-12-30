@@ -29,14 +29,12 @@ class userService {
         return true;
     }
 
-    resetpassword = (user, callback) => {
-        userModel.resetpassword(user, (err, data) => {
-            if (err) {
-                return callback(err, null);
-            } else {
-                return callback(null, data);
-            }
-        });
+    resetpassword = async (user) => {
+        const success = await userModel.resetpassword(user);
+        if (!success) {
+            return false;
+        }
+        return true;
     }
 }
 
