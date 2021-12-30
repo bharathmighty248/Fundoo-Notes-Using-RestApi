@@ -74,22 +74,13 @@ class userModel {
         });
     }
 
-    forgotpassword = (data, callBack) => {
-        user.findOne({ email: data.email }, (error, data) => {
-            if (data) {
-                nodemailer.sendEmail(data.email, (err, data) => {
-                    if (err) {
-                        return callBack(err, null);
-                    } else {
-                        return callBack(null, data)
-                    }
-                });
-            } else if (!data) {
-                return callBack(error + "Invalid Credential", null);
-            } else {
-                return callBack(error, null);
-            }
-        });
+    forgotpassword = async (data) => {
+        const userpresent = await user.find({ email: data.email });
+        if (userpresent.length !== 0) {
+            await nodemailer.sendEmail(data.email);
+            return true;
+        }
+        return false;
     }
 
     resetpassword = (Data, callBack) => {

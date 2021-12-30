@@ -78,30 +78,26 @@ class Controller {
         }
     };
 
-    forgotpassword = (req, res) => {
+    forgotpassword = async (req, res) => {
         try {
             const user = {
                 email: req.body.email,
             };
-            userService.forgotpassword(user, (error, data) => {
-                if (error) {
-                    return res.status(404).json({
-                        success: false,
-                        message: "User doesn't exist",
-                    });
-                } else {
-                    return res.status(200).json({
-                        success: true,
-                        message: "Reset code sent to your registered email..",
-                        data,
-                    });
-                }
+            const mailsent = await userService.forgotpassword(user);
+            if (!mailsent) {
+                return res.status(404).json({
+                    success: false,
+                    message: "User doesn't exist"
+                });
+            }
+            return res.status(200).json({
+                success: true,
+                message: "Reset code sent to your registered email.."
             });
         } catch (error) {
             return res.status(500).json({
                 success: false,
                 message: "Internal error While sending reset code to your email",
-                data: null,
             });
         }
     }
