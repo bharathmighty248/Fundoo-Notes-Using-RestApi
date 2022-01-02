@@ -54,6 +54,40 @@
                     }
                 }
             }
+        },
+        "/login": {
+            "post": {
+                "tags": ["User Login"],
+                "description": "Already registered? Then login using your credentials",
+                "parameters": [
+                    {
+                        "name": "User Login",
+                        "in": "body",
+                        "description": "Login here with login info",
+                        "schema": {
+                            "$ref": "#/definitions/logininfo"
+                        }
+                    }
+                ],
+                "produces": ["application/json"],
+                "schema": {
+                    "$ref": "#/definitions/logininfo"
+                },
+                "responses": {
+                    "400": {
+                        "description": "Wrong Input"
+                    },
+                    "200": {
+                        "description": "User logged in successfully"
+                    },
+                    "401": {
+                        "description": "Unable to login. Please enter correct info"
+                    },
+                    "500": {
+                        "description": "Internal error While Login"
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -68,6 +102,19 @@
                     "type": "string",
                     "description": "Last Name of user"
                 },
+                "email": {
+                    "type": "string",
+                    "description": "Email ID of user"
+                },
+                "password": {
+                    "type": "string",
+                    "description": "Password of user"
+                }
+            }
+        },
+        "logininfo": {
+            "type": "object",
+            "properties": {
                 "email": {
                     "type": "string",
                     "description": "Email ID of user"
