@@ -88,6 +88,37 @@
                     }
                 }
             }
+        },
+        "/forgotpassword": {
+            "post": {
+                "tags": ["Forgot password"],
+                "description": "forgot Password? Don't worry! you will get reset-code to reset your password again",
+                "parameters": [
+                    {
+                        "name": "Forgot password",
+                        "in": "body",
+                        "description": "User will get reset code on registered email",
+                        "schema": {
+                            "$ref": "#/definitions/forgotpassword"
+                        }
+                    }
+                ],
+                "produces": ["application/json"],
+                "schema": {
+                    "$ref": "#/definitions/forgotpassword"
+                },
+                "responses": {
+                    "200": {
+                        "description": "Reset code sent to your registered email.."
+                    },
+                    "404": {
+                        "description": "User doesn't exist"
+                    },
+                    "500": {
+                        "description": "Internal error while sending reset code to your email"
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -122,6 +153,15 @@
                 "password": {
                     "type": "string",
                     "description": "Password of user"
+                }
+            }
+        },
+        "forgotpassword": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "description": "Email ID of user"
                 }
             }
         }
