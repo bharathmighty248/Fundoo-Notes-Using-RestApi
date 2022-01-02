@@ -75,5 +75,14 @@
             "password": "bharath@248"
         }
 
+    },
+
+    "forgotPassword" : {
+        "registereduser" : {
+            "email":"bharathmighty248@gmail.com"
+        },
+        "nonRegisteredUser" : {
+            "email":"bharathmighty123@gmail.com"
+        }
     }
 }

@@ -198,4 +198,32 @@ describe("User Login Api", () => {
             done();
         });
     });
+});
+
+describe("Forgot Password Api", () => {
+    it("WhenGiven_NonregisteredUserEmail_ShouldReturn_UserDoesn'tExist", (done) => {
+        chai
+        .request(server)
+        .post('/forgotpassword')
+        .send(data.forgotPassword.nonRegisteredUser)
+        .end((err,res) => {
+            res.should.have.status(404);
+            res.body.should.have.property("message").eql("User doesn't exist");
+            res.body.should.have.property("success").eql(false);
+            done();
+        })
+    });
+
+    it("WhenGiven_registeredUserEmail_ShouldReturn_EmailSentSuccessfull", (done) => {
+        chai
+        .request(server)
+        .post('/forgotpassword')
+        .send(data.forgotPassword.registereduser)
+        .end((err,res) => {
+            res.should.have.status(200);
+            res.body.should.have.property("message").eql("Reset code sent to your registered email..");
+            res.body.should.have.property("success").eql(true);
+            done();
+        })
+    })
 })
