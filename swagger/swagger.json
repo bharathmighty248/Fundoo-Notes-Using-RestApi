@@ -119,6 +119,40 @@
                     }
                 }
             }
+        },
+        "/resetpassword": {
+            "post": {
+                "tags": ["Reset password"],
+                "description": "Reset your password using with reset-code sent on registered email",
+                "parameters": [
+                    {
+                        "name": "Reset password",
+                        "in": "body",
+                        "description": "Reset your password using reset code",
+                        "schema": {
+                            "$ref": "#/definitions/resetpassword"
+                        }
+                    }
+                ],
+                "produces": ["application/json"],
+                "schema": {
+                    "$ref": "#/definitions/resetpassword"
+                },
+                "responses": {
+                    "200": {
+                        "description": "password reset successfull"
+                    },
+                    "400": {
+                        "description": "Wrong Input"
+                    },
+                    "401": {
+                        "description": "Unable to reset password. Please enter correct info"
+                    },
+                    "500": {
+                        "description": "Internal error while reset password"
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -162,6 +196,23 @@
                 "email": {
                     "type": "string",
                     "description": "Email ID of user"
+                }
+            }
+        },
+        "resetpassword": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "description": "Email ID of user"
+                },
+                "resetcode": {
+                    "type": "string",
+                    "description": "Please check your registered email"
+                },
+                "newPassword": {
+                    "type": "string",
+                    "description": "give new password"
                 }
             }
         }
