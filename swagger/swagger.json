@@ -1,0 +1,82 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Fundoo Notes App",
+        "description": "Never miss a thing in Life. Take notes quickly. Organize and keep track of all your notes.",
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "host": "localhost:3000",
+    "basePath": "/",
+    "tags": [
+        {
+            "name": "FUNDOO NOTES KEEPING APP",
+            "description": "Keep your all IMP notes safe"
+        }
+    ],
+    "schemes": ["http"],
+    "consumes": ["application/json"],
+    "produces": ["application/json"],
+    "paths": {
+        "/register": {
+            "post": {
+                "tags": ["User Registration"],
+                "description": "Create a new user in the FundooNotes App",
+                "parameters": [
+                    {
+                        "name": "User Registration",
+                        "in": "body",
+                        "description": "User that we wants to register",
+                        "schema": {
+                            "$ref": "#/definitions/userinfo"
+                        }
+                    }
+                ],
+                "produces": ["application/json"],
+                "schema": {
+                    "$ref": "#/definitions/userinfo"
+                },
+                "responses": {
+                    "400": {
+                        "description": "Wrong Input"
+                    },
+                    "200": {
+                        "description": "User Registered"
+                    },
+                    "409": {
+                        "description": "User already exist"
+                    },
+                    "500": {
+                        "description": "Internal error While Registering"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "userinfo": {
+            "type": "object",
+            "properties": {
+                "firstName": {
+                    "type": "string",
+                    "description": "First Name of user"
+                },
+                "lastName": {
+                    "type": "string",
+                    "description": "Last Name of user"
+                },
+                "email": {
+                    "type": "string",
+                    "description": "Email ID of user"
+                },
+                "password": {
+                    "type": "string",
+                    "description": "Password of user"
+                }
+            }
+        }
+    }
+}
