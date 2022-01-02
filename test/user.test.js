@@ -132,3 +132,70 @@ describe("User Registration Api", () => {
         });
     });
 });
+
+describe("User Login Api", () => {
+    it("WhenGivenEmail_DoesNotMatch_withRegex_ShouldReturn_Wrong input", (done) => {
+        chai
+        .request(server)
+        .post("/login")
+        .send(data.login.InvalidEmail)
+        .end((err, res) => {
+            res.should.have.status(400);
+            res.body.should.have.property("message").eql("Wrong Input");
+            res.body.should.have.property("success").eql(false);
+            done();
+        });
+    });
+
+    it("WhenGivenPassword_DoesNotMatch_withRegex_ShouldReturn_Wrong input", (done) => {
+        chai
+        .request(server)
+        .post("/login")
+        .send(data.login.invalidPassword)
+        .end((err, res) => {
+            res.should.have.status(400);
+            res.body.should.have.property("message").eql("Wrong Input");
+            res.body.should.have.property("success").eql(false);
+            done();
+        });
+    });
+
+    it("WhenGivenIncorrectEmail_ShouldReturn_Unable to login", (done) => {
+        chai
+        .request(server)
+        .post("/login")
+        .send(data.login.incorrectEmail)
+        .end((err, res) => {
+            res.should.have.status(401);
+            res.body.should.have.property("message").eql("Unable to login. Please enter correct info");
+            res.body.should.have.property("success").eql(false);
+            done();
+        });
+    });
+
+    it("WhenGivenIncorrectPassword_ShouldReturn_Unable to login", (done) => {
+        chai
+        .request(server)
+        .post("/login")
+        .send(data.login.incorrectPassword)
+        .end((err, res) => {
+            res.should.have.status(401);
+            res.body.should.have.property("message").eql("Unable to login. Please enter correct info");
+            res.body.should.have.property("success").eql(false);
+            done();
+        });
+    });
+
+    it("WhenGivencorrectUserDetails_ShouldReturn_loggedinSuccessfully", (done) => {
+        chai
+        .request(server)
+        .post("/login")
+        .send(data.login.user)
+        .end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.have.property("message").eql("User logged in successfully");
+            res.body.should.have.property("success").eql(true);
+            done();
+        });
+    });
+})

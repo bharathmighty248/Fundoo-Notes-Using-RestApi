@@ -51,5 +51,29 @@
             "email":"bharathmiighty248@gmail.com",
             "password": "bharath"
         }
+    },
+
+    "login" : {
+        "user": {
+            "email":"bharathmighty248@gmail.com",
+            "password": "pasumarthi@248"
+        },
+        "InvalidEmail":{
+            "email":"bharathmighty248@@gmail.com",
+            "password": "pasumarthi@248"
+        },
+        "invalidPassword":{
+            "email":"bharathmiighty248@gmail.com",
+            "password": "bharath"
+        },
+        "incorrectEmail": {
+            "email":"bharathmighty@gmail.com",
+            "password": "pasumarthi@248"
+        },
+        "incorrectPassword" : {
+            "email":"bharathmighty248@gmail.com",
+            "password": "bharath@248"
+        }
+
     }
 }
