@@ -84,5 +84,28 @@
         "nonRegisteredUser" : {
             "email":"bharathmighty123@gmail.com"
         }
+    },
+
+    "resetPassword" : {
+        "correctInfo" : {
+            "email" : "bharathmighty248@gmail.com",
+            "resetcode" : "5dquas8ndl",
+            "newPassword" : "bharath@248"
+        },
+        "invalidInfo": {
+            "email" : "bharathmighty248@gmail.com",
+            "resetcode" : "4lwx0inj0c",
+            "newPassword" : "bharath"
+        },
+        "incorrectEmail": {
+            "email" : "bharathmighty123@gmail.com",
+            "resetcode" : "5dquas8ndl",
+            "newPassword" : "bharath@248"
+        },
+        "incorrectResetcode": {
+            "email" : "bharathmighty248@gmail.com",
+            "resetcode" : "4lwx0inj0c",
+            "newPassword" : "bharath@248"
+        }
     }
 }

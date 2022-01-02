@@ -226,4 +226,58 @@ describe("Forgot Password Api", () => {
             done();
         })
     })
-})
+});
+
+describe("Reset Password Api", () => {
+    it("WhenGiven_InvalidInfo_ShouldReturn_WrongInput", (done) => {
+        chai
+        .request(server)
+        .post('/resetpassword')
+        .send(data.resetPassword.invalidInfo)
+        .end((err,res) => {
+            res.should.have.status(400);
+            res.body.should.have.property("message").eql("Wrong Input");
+            res.body.should.have.property("success").eql(false);
+            done();
+        })
+    });
+
+    it("WhenGiven_IncorrectEmail_ShouldReturn_UnableToResetPassword", (done) => {
+        chai
+        .request(server)
+        .post('/resetpassword')
+        .send(data.resetPassword.incorrectEmail)
+        .end((err,res) => {
+            res.should.have.status(401);
+            res.body.should.have.property("message").eql("Unable to reset password. Please enter correct info");
+            res.body.should.have.property("success").eql(false);
+            done();
+        })
+    });
+
+    it("WhenGiven_IncorrectResetcode_ShouldReturn_UnableToResetPassword", (done) => {
+        chai
+        .request(server)
+        .post('/resetpassword')
+        .send(data.resetPassword.incorrectResetcode)
+        .end((err,res) => {
+            res.should.have.status(401);
+            res.body.should.have.property("message").eql("Unable to reset password. Please enter correct info");
+            res.body.should.have.property("success").eql(false);
+            done();
+        })
+    });
+
+    it("WhenGiven_CorrectInfo_ShouldReturn_ResetPasswordSuccessfull", (done) => {
+        chai
+        .request(server)
+        .post('/resetpassword')
+        .send(data.resetPassword.correctInfo)
+        .end((err,res) => {
+            res.should.have.status(200);
+            res.body.should.have.property("message").eql("password reset successfull");
+            res.body.should.have.property("success").eql(true);
+            done();
+        })
+    });
+});
