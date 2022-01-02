@@ -1,0 +1,55 @@
+{
+    "registration": {
+        "user": {
+            "firstName":"bharath",
+            "lastName":"pasumarthi",
+            "email":"bharathmighty248@gmail.com",
+            "password": "bharath@248"
+        },
+        
+        "withoutEmail":{
+            "firstName": "bharath",
+            "lastName": "pasumarthi",
+            "password": "bharath@248"
+        },
+        "WrongEmail":{
+            "firstName":"bharath",
+            "lastName":"pasumarthi",
+            "email":"bharathmighty248@@gmail.com",
+            "password": "bharath@248"
+        },
+        "withoutFirstname":{
+            "lastName":"pasumarthi",
+            "email":"bharathmiighty248@gmail.com",
+            "password": "bharath@248"
+        },
+        "withoutLastname":{
+            "firstName":"bharath",
+            "email":"bharathmiighty248@gmail.com",
+            "password": "bharath@248"
+        },
+        "withoutPassword":{
+            "firstName":"bharath",
+            "lastName":"pasumarthi",
+            "email":"bharathmiighty248@gmail.com"
+        },
+        "WrongFirstname": {
+            "firstName":"123",
+            "lastName":"pasumarthi",
+            "email":"bharathmiighty248@gmail.com",
+            "password": "bharath@248"
+        },
+        "WrongLastname": {
+            "firstName":"bharath",
+            "lastName":"123",
+            "email":"bharathmiighty248@gmail.com",
+            "password": "bharath@248"
+        },
+        "WrongPassword": {
+            "firstName":"bharath",
+            "lastName":"pasumarthi",
+            "email":"bharathmiighty248@gmail.com",
+            "password": "bharath"
+        }
+    }
+}

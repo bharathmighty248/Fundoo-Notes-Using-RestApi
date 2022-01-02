@@ -18,3 +18,5 @@ require('./app/routes/user.routes')(app);
 app.listen(process.env.PORT, () => {
     logger.info("Server is listening on port 3000");
 });
+
+module.exports = app;
