@@ -21,20 +21,24 @@ class userService {
         });
     }
 
-    forgotpassword = async (user) => {
-        const success = await userModel.forgotpassword(user);
-        if (!success) {
-            return false;
-        }
-        return true;
+    forgotpassword = (user, callback) => {
+        userModel.forgotpassword(user, (err, data) => {
+            if (err) {
+                return callback(err, null);
+            } else {
+                return callback(null, data);
+            }
+        });
     }
 
-    resetpassword = async (user) => {
-        const success = await userModel.resetpassword(user);
-        if (!success) {
-            return false;
-        }
-        return true;
+    resetpassword = (user, callback) => {
+        userModel.resetpassword(user, (err, data) => {
+            if (err) {
+                return callback(err, null);
+            } else {
+                return callback(null, data);
+            }
+        });
     }
 }
 

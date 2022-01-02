@@ -78,31 +78,35 @@ class Controller {
         }
     };
 
-    forgotpassword = async (req, res) => {
+    forgotpassword = (req, res) => {
         try {
             const user = {
                 email: req.body.email,
             };
-            const mailsent = await userService.forgotpassword(user);
-            if (!mailsent) {
-                return res.status(404).json({
-                    success: false,
-                    message: "User doesn't exist"
-                });
-            }
-            return res.status(200).json({
-                success: true,
-                message: "Reset code sent to your registered email.."
+            userService.forgotpassword(user, (error, data) => {
+                if (error) {
+                    return res.status(404).json({
+                        success: false,
+                        message: "User doesn't exist",
+                    });
+                } else {
+                    return res.status(200).json({
+                        success: true,
+                        message: "Reset code sent to your registered email..",
+                        data,
+                    });
+                }
             });
         } catch (error) {
             return res.status(500).json({
                 success: false,
-                message: "Internal error While sending reset code to your email",
+                message: "Error While sending reset code to your email",
+                data: null,
             });
         }
     }
 
-    resetpassword = async (req, res) => {
+    resetpassword = (req, res) => {
         try {
             const resetInfo = {
                 email: req.body.email,
@@ -113,24 +117,27 @@ class Controller {
             if (Validation.error) {
                 return res.status(400).send({
                     success: false,
-                    message: "Wrong Input format"
+                    message: "Wrong Input"
                 })
             }
-            const isReset = await userService.resetpassword(resetInfo);
-            if (!isReset) {
-                return res.status(401).json({
-                    success: false,
-                    message: 'Unable to reset password. Please enter correct info'
-                });
-            }
-            return res.status(200).json({
-                success: true,
-                message: 'password reset successfull'
+            userService.resetpassword(resetInfo, (error, data) => {
+                if (error) {
+                    return res.status(401).json({
+                        success: false,
+                        message: 'Unable to reset password. Please enter correct info',
+                    });
+                } else if (data) {
+                    return res.status(200).json({
+                        success: true,
+                        message: 'password reset successfull',
+                    });
+                }
             });
         } catch (error) {
             return res.status(500).json({
                 success: false,
-                message: 'Internal error while reset password'
+                message: 'Internal error while reset password',
+                data: null
             });
         }
     };

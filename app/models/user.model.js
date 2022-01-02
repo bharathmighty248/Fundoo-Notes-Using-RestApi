@@ -74,26 +74,46 @@ class userModel {
         });
     }
 
-    forgotpassword = async (data) => {
-        const userpresent = await user.find({ email: data.email });
-        if (userpresent.length !== 0) {
-            await nodemailer.sendEmail(data.email);
-            return true;
-        }
-        return false;
+    forgotpassword = (data, callBack) => {
+        user.findOne({ email: data.email }, (error, data) => {
+            if (data) {
+                nodemailer.sendEmail(data.email, (err, data) => {
+                    if (err) {
+                        return callBack(err, null);
+                    } else {
+                        return callBack(null, data)
+                    }
+                });
+            } else if (!data) {
+                return callBack(error + "Invalid Credential", null);
+            } else {
+                return callBack(error, null);
+            }
+        });
     }
 
-    resetpassword = async (Data) => {
-        const codepresent = await resetcodemodel.findOne({ email: Data.email, resetcode: Data.resetcode });
-        if (codepresent) {
-            const hash = await bcryptPassword.hashpassword(Data.newPassword);
-            const success = await user.findOneAndUpdate({ email: Data.email }, { $set: { password: hash } });
-            if (success) {
-                return true;
+    resetpassword = (Data, callBack) => {
+        resetcodemodel.findOne({ email: Data.email, resetcode: Data.resetcode }, (error,data) => {
+            if (data) {
+                bcryptPassword.hashpassword(Data.newPassword, (error, data) => {
+                    if (data) {
+                        user.updateOne({ email: Data.email }, { $set: { password: data } })
+                            .then(data => {
+                                return callBack(null, data);
+                            })
+                            .catch(err => {
+                                return callBack(err, null);
+                            });
+                    } else {
+                        return callBack(error, null);
+                    }
+                });
+            } else if (!data) {
+                return callBack(error + "Invalid Credential", null);
+            } else {
+                return callBack(error, null);
             }
-            return false;
-        }
-        return false;
-    }
+        })
+    };
 }
 module.exports = new userModel();

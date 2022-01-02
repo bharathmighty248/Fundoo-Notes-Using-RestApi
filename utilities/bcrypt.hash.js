@@ -1,15 +1,16 @@
 const bcrypt = require('bcryptjs');
 
 class bcryptPassword {
-    hashpassword = async (details) => {
+    hashpassword = (details, callback) => {
         try {
-            const hash = await bcrypt.hash(details, 10);
-            if (hash) {
-                return hash;
-            }
-            return false;
+            bcrypt.hash(details, 10, (err, hash) => {
+                if (err) {
+                    return callback(err, null);
+                }
+                return callback(null, hash);
+            })
         } catch (error) {
-            return (error,null);
+            return callback(error,null)
         }
     }
 }

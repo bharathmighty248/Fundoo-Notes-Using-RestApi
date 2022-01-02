@@ -2,7 +2,7 @@ const nodemailer = require('nodemailer');
 const resetcodemodel = require('../app/models/resetcode.model');
 
 class forgotReset {
-    sendEmail = async (details, callback) => {
+    sendEmail = (details, callback) => {
         try {
             const resetcode = Math.random().toString(36).substring(2,12);
             const transporter = nodemailer.createTransport({
@@ -16,14 +16,20 @@ class forgotReset {
                 }
             });
 
-            await transporter.sendMail({
+            transporter.sendMail({
                 from: process.env.MAIL_SENDER,
                 to: details,
                 subject: "Your Password Reset Code",
                 text: `Use this code to reset your password: ${resetcode} `
             });
             const code = new resetcodemodel({ email : details,resetcode });
-            await code.save();
+            code.save()
+            .then(data => {
+                return callback(null, data);
+            })
+            .catch(err => {
+                return callback(err, null);
+            });
         } catch (error) {
             return callback(error, null);
         }
