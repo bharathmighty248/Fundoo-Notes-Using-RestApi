@@ -64,6 +64,33 @@ class Controller {
                 success: false
             });
         }
+    };
+
+    deletenotes = (req,res) => {
+        try {
+            const info = {
+                email: req.user.email,
+                noteId: req.body.noteId
+            }
+            noteservice.deletenotes(info,(error) => {
+                if (error) {
+                    return res.status(400).json({
+                        message: 'This note is not exist or this belongs to another user',
+                        success: false
+                    });
+                } else {
+                    return res.status(200).json({
+                        message: "Note deleted successfully",
+                        success: true
+                    })
+                }
+            });
+        } catch (error) {
+            return res.status(500).json({
+                message: 'Internal server error',
+                success: false
+            });
+        }
     }
 }
 

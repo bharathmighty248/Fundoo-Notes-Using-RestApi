@@ -19,6 +19,16 @@ class Service {
                 return callback(null, data);
             }
         })
+    };
+
+    deletenotes = (info, callback) => {
+        noteModel.deleteNote(info, (err,data) => {
+            if (err) {
+                return callback(err, null);
+            } else {
+                return callback(null, data);
+            }
+        })
     }
 }
 
