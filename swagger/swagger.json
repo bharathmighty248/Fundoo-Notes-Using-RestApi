@@ -196,6 +196,49 @@
                     }
                 }
             }
+        },
+        "/updatenote": {
+            "put": {
+                "tags": ["Update Notes"],
+                "description": "want to update, don't worry! it is very easy",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Authorization",
+                        "description": "Token for Authentication..! Please Enter a token along with bearer [bearer ]..",
+                        "schema": {
+                            "type": "string",
+                            "required": true
+                        }
+                    },
+                    {
+                        "name": "Update Notes",
+                        "in": "body",
+                        "description": "Update notes easily",
+                        "schema": {
+                            "$ref": "#/definitions/updateNote"
+                        }
+                    }
+                ],
+                "produces": ["application/json"],
+                "schema": {
+                    "$ref": "#/definitions/updateNote"
+                },
+                "responses": {
+                    "200": {
+                        "description": "Note updated successfully"
+                    },
+                    "400": {
+                        "description": "This note is not exist or this belongs to another user"
+                    },
+                    "401": {
+                        "description": "Authorisation failed, Invalid user"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -262,6 +305,23 @@
         "createNote": {
             "type": "object",
             "properties": {
+                "title": {
+                    "type": "string",
+                    "description": "Title of the Notes"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "description of the Notes"
+                }
+            }
+        },
+        "updateNote": {
+            "type": "object",
+            "properties": {
+                "noteId": {
+                    "type": "string",
+                    "description": "id of the note"
+                },
                 "title": {
                     "type": "string",
                     "description": "Title of the Notes"
