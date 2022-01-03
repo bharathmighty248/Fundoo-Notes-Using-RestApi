@@ -65,3 +65,65 @@ describe("Create Note Api", () => {
         });
     });
 });
+
+describe("Update Note Api", () => {
+    it("whenGiven_validToken_ShouldReturn_Noteupdated", (done) => {
+        const token = data.createnote.validToken;
+        const updateNotes = {
+            noteId:"61d29c4912857963d55f762a",
+            title: faker.lorem.word(),
+            description: faker.lorem.sentence()
+        };
+        chai
+        .request(server)
+        .put("/updatenote")
+        .set({ authorization: token })
+        .send(updateNotes)
+        .end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.have.property("message").eql("Note updated successfully");
+            res.body.should.have.property("success").eql(true);
+            done();
+        });
+    });
+
+    it("whenGiven_InvalidToken_ShouldReturn_InvalidUser", (done) => {
+        const token = data.createnote.invalidToken;
+        const updateNotes = {
+            noteId:"61d29c4912857963d55f762a",
+            title: faker.lorem.word(),
+            description: faker.lorem.sentence()
+        };
+        chai
+        .request(server)
+        .put("/updatenote")
+        .set({ authorization: token })
+        .send(updateNotes)
+        .end((err, res) => {
+            res.should.have.status(401);
+            res.body.should.have.property("message").eql("Authorisation failed, Invalid user");
+            res.body.should.have.property("success").eql(false);
+            done();
+        });
+    });
+
+    it("whenGiven_validToken_ButWrondnoteIdIsProvided_ShouldReturn_Notedoes'tExist", (done) => {
+        const token = data.createnote.validToken;
+        const updateNotes = {
+            noteId:"61d29c4912857963d55f762",
+            title: faker.lorem.word(),
+            description: faker.lorem.sentence()
+        };
+        chai
+        .request(server)
+        .put("/updatenote")
+        .set({ authorization: token })
+        .send(updateNotes)
+        .end((err, res) => {
+            res.should.have.status(400);
+            res.body.should.have.property("message").eql("This note is not exist or this belongs to another user");
+            res.body.should.have.property("success").eql(false);
+            done();
+        });
+    });
+});
