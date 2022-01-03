@@ -153,6 +153,49 @@
                     }
                 }
             }
+        },
+        "/createnote": {
+            "post": {
+                "tags": ["Create Notes"],
+                "description": "Never miss a thing in Life. Take notes quickly",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Authorization",
+                        "description": "Token for Authentication..! Please Enter a token along with bearer [bearer ]..",
+                        "schema": {
+                            "type": "string",
+                            "required": true
+                        }
+                    },
+                    {
+                        "name": "Create Notes",
+                        "in": "body",
+                        "description": "Take Notes with title and description",
+                        "schema": {
+                            "$ref": "#/definitions/createNote"
+                        }
+                    }
+                ],
+                "produces": ["application/json"],
+                "schema": {
+                    "$ref": "#/definitions/createNote"
+                },
+                "responses": {
+                    "200": {
+                        "description": "Note creation success"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Authorisation failed, Invalid user"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -213,6 +256,19 @@
                 "newPassword": {
                     "type": "string",
                     "description": "give new password"
+                }
+            }
+        },
+        "createNote": {
+            "type": "object",
+            "properties": {
+                "title": {
+                    "type": "string",
+                    "description": "Title of the Notes"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "description of the Notes"
                 }
             }
         }
