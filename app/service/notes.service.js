@@ -9,6 +9,16 @@ class Service {
                 return callback(null, data);
             }
         })
+    };
+
+    updatenotes = (info, callback) => {
+        noteModel.updateNote(info, (err,data) => {
+            if (err) {
+                return callback(err, null);
+            } else {
+                return callback(null, data);
+            }
+        })
     }
 }
 
