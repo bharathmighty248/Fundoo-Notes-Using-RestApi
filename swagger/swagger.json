@@ -239,6 +239,49 @@
                     }
                 }
             }
+        },
+        "/deletenote": {
+            "delete": {
+                "tags": ["Delete Notes"],
+                "description": "want to delete, don't worry! it is very easy",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Authorization",
+                        "description": "Token for Authentication..! Please Enter a token along with bearer [bearer ]..",
+                        "schema": {
+                            "type": "string",
+                            "required": true
+                        }
+                    },
+                    {
+                        "name": "Delete Notes",
+                        "in": "body",
+                        "description": "Delete notes easily",
+                        "schema": {
+                            "$ref": "#/definitions/deleteNote"
+                        }
+                    }
+                ],
+                "produces": ["application/json"],
+                "schema": {
+                    "$ref": "#/definitions/deleteNote"
+                },
+                "responses": {
+                    "200": {
+                        "description": "Note deleted successfully"
+                    },
+                    "400": {
+                        "description": "This note is not exist or this belongs to another user"
+                    },
+                    "401": {
+                        "description": "Authorisation failed, Invalid user"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -329,6 +372,15 @@
                 "description": {
                     "type": "string",
                     "description": "description of the Notes"
+                }
+            }
+        },
+        "deleteNote": {
+            "type": "object",
+            "properties": {
+                "noteId": {
+                    "type": "string",
+                    "description": "id of the note"
                 }
             }
         }
