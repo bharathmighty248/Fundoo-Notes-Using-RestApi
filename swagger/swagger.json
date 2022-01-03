@@ -314,8 +314,50 @@
                     }
                 }
             }
+        },
+        "/getnotebyId": {
+            "get": {
+                "tags": ["Get Note by Id"],
+                "description": "Want a specific notes. Ok! search by it's Id",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Authorization",
+                        "description": "Token for Authentication..! Please Enter a token along with bearer [bearer ]..",
+                        "schema": {
+                            "type": "string",
+                            "required": true
+                        }
+                    },
+                    {
+                        "in": "body",
+                        "name": "Get Notes by Id",
+                        "description": "your notes",
+                        "schema": {
+                            "$ref": "#/definitions/getNotebyId"
+                        }
+                    }
+                ],
+                "produces": ["application/json"],
+                "schema": {
+                    "$ref": "#/definitions/getNotebyId"
+                },
+                "responses": {
+                    "200": {
+                        "description": "This Note is.."
+                    },
+                    "400": {
+                        "description": "This note is not exist or this belongs to another user"
+                    },
+                    "401": {
+                        "description": "Authorisation failed, Invalid user"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
         }
-
     },
     "definitions": {
         "userinfo": {
@@ -409,6 +451,15 @@
             }
         },
         "deleteNote": {
+            "type": "object",
+            "properties": {
+                "noteId": {
+                    "type": "string",
+                    "description": "id of the note"
+                }
+            }
+        },
+        "getNotebyId": {
             "type": "object",
             "properties": {
                 "noteId": {
