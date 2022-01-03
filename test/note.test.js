@@ -227,3 +227,59 @@ describe("Get Note Api", () => {
         });
     });
 });
+
+describe("Get Note by Id Api", () => {
+    it("whenGiven_validToken_IfUserHasthatNotes_ShouldReturn_Notes", (done) => {
+        const token = data.createnote.validToken;
+        const noteid = {
+            noteId:"61d2b4b842b8bc92214f14f7"
+        };
+        chai
+        .request(server)
+        .get("/getnotebyId")
+        .set({ authorization: token })
+        .send(noteid)
+        .end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.have.property("message").eql("This Note is..");
+            res.body.should.have.property("success").eql(true);
+            done();
+        });
+    });
+
+    it("whenGiven_InvalidToken_ShouldReturn_Unauthorised", (done) => {
+        const token = data.createnote.invalidToken;
+        const noteid = {
+            noteId:"61d2b4b842b8bc92214f14f7"
+        };
+        chai
+        .request(server)
+        .get("/getnotebyId")
+        .set({ authorization: token })
+        .send(noteid)
+        .end((err, res) => {
+            res.should.have.status(401);
+            res.body.should.have.property("message").eql("Authorisation failed, Invalid user");
+            res.body.should.have.property("success").eql(false);
+            done();
+        });
+    });
+
+    it("whenGiven_validToken_IfUserdoesn'tHaveThatNotes_ShouldReturn_Notedoesn'tExist", (done) => {
+        const token = data.createnote.validToken;
+        const noteid = {
+            noteId:"61d2b4b842b8bc92214f14f"
+        };
+        chai
+        .request(server)
+        .get("/getnotebyId")
+        .set({ authorization: token })
+        .send(noteid)
+        .end((err, res) => {
+            res.should.have.status(400);
+            res.body.should.have.property("message").eql("This note is not exist or this belongs to another user");
+            res.body.should.have.property("success").eql(false);
+            done();
+        });
+    });
+});
