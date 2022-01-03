@@ -282,7 +282,40 @@
                     }
                 }
             }
+        },
+        "/getnotes": {
+            "get": {
+                "tags": ["Get Notes"],
+                "description": "Want to see your Notes..ok!",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Authorization",
+                        "description": "Token for Authentication..! Please Enter a token along with bearer [bearer ]..",
+                        "schema": {
+                            "type": "string",
+                            "required": true
+                        }
+                    }
+                ],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "user notes"
+                    },
+                    "207": {
+                        "description": "User has not created any notes yet"
+                    },
+                    "401": {
+                        "description": "Authorisation failed, Invalid user"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
         }
+
     },
     "definitions": {
         "userinfo": {
