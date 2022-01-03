@@ -39,6 +39,16 @@ class Service {
                 return callback(null, data);
             }
         })
+    };
+
+    getnotebyId = (info, callback) => {
+        noteModel.getNotebyId(info, (err,data) => {
+            if (err) {
+                return callback(err, null);
+            } else {
+                return callback(null, data);
+            }
+        })
     }
 }
 

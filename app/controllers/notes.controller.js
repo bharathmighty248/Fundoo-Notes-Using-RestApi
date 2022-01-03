@@ -118,7 +118,35 @@ class Controller {
                 success: false
             });
         }
-    }
+    };
+
+    getnotebyId = (req,res) => {
+        try {
+            const info = {
+                email: req.user.email,
+                noteId: req.body.noteId
+            }
+            noteservice.getnotebyId(info,(error,data) => {
+                if (error) {
+                    return res.status(400).json({
+                        message: 'This note is not exist or this belongs to another user',
+                        success: false
+                    });
+                } else {
+                    return res.status(200).json({
+                        message: "This Note is..",
+                        success: true,
+                        data
+                    })
+                }
+            });
+        } catch (error) {
+            return res.status(500).json({
+                message: 'Internal server error',
+                success: false
+            });
+        }
+    };
 }
 
 module.exports = new Controller();
