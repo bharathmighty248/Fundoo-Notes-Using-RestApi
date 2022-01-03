@@ -94,6 +94,22 @@ class noteModel {
         } catch (error) {
             return callback(error, null);
         }
+    };
+
+    getNote = (info, callback) => {
+        try {
+            notemodel.find({ email: info.email },(error, data) => {
+                if (data) {
+                    return callback(null, data);
+                } else if (!data) {
+                    return callback(null, data);
+                } else {
+                    return callback(error, null);
+                }
+            });
+        } catch (error) {
+            return callback(error, null);
+        }
     }
 }
 
