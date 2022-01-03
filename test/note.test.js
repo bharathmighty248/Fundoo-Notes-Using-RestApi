@@ -183,3 +183,47 @@ describe("Delete Note Api", () => {
         });
     });
 });
+
+describe("Get Note Api", () => {
+    it("whenGiven_validToken_IfUserHasAnyNotes_ShouldReturn_AllNotes", (done) => {
+        const token = data.createnote.validToken;
+        chai
+        .request(server)
+        .get("/getnotes")
+        .set({ authorization: token })
+        .end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.have.property("message").eql("user notes");
+            res.body.should.have.property("success").eql(true);
+            done();
+        });
+    });
+
+    it("whenGiven_InvalidToken_IfUserHasAnyNotes_ShouldReturn_Unauthorised", (done) => {
+        const token = data.createnote.invalidToken;
+        chai
+        .request(server)
+        .get("/getnotes")
+        .set({ authorization: token })
+        .end((err, res) => {
+            res.should.have.status(401);
+            res.body.should.have.property("message").eql("Authorisation failed, Invalid user");
+            res.body.should.have.property("success").eql(false);
+            done();
+        });
+    });
+
+    it("whenGiven_validToken_IfUserHasNoNotes_ShouldReturn_NoNotesExist", (done) => {
+        const token = data.createnote.validbutnonotesToken;
+        chai
+        .request(server)
+        .get("/getnotes")
+        .set({ authorization: token })
+        .end((err, res) => {
+            res.should.have.status(207);
+            res.body.should.have.property("message").eql("User has not created any notes yet");
+            res.body.should.have.property("success").eql(true);
+            done();
+        });
+    });
+});
