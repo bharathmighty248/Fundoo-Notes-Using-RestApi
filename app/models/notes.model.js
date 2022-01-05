@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const redisjs = require('../../utilities/redis');
 
 const noteSchema = mongoose.Schema(
     {
@@ -114,6 +115,11 @@ class noteModel {
 
     getNotebyId = async (info, callback) => {
         try {
+            const cachevalue = await redisjs.redisNotebyId(info.noteId);
+            if (cachevalue) {
+                const data = JSON.parse(cachevalue);
+                return callback(null, data);
+            }
             const userNotes = await notemodel.find({ email: info.email });
             if (userNotes.length === 0) {
                 return callback(error,null);
@@ -125,6 +131,7 @@ class noteModel {
             }
             notemodel.findById(info.noteId)
             .then(data => {
+                redisjs.setData(info.noteId,JSON.stringify(data));
                 return callback(null, data);
             })
             .catch(err => {
