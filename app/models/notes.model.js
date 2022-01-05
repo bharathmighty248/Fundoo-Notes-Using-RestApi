@@ -64,6 +64,7 @@ class noteModel {
             }
             notemodel.findByIdAndUpdate(noteId, updates, { new: true })
             .then(data => {
+                redisjs.clearCache(noteId);
                 return callback(null, data);
             })
             .catch(err => {
@@ -87,6 +88,7 @@ class noteModel {
             }
             notemodel.findByIdAndDelete(info.noteId)
             .then(data => {
+                redisjs.clearCache(info.noteId);
                 return callback(null, data);
             })
             .catch(err => {
