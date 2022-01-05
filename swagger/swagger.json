@@ -197,7 +197,7 @@
                 }
             }
         },
-        "/updatenote": {
+        "/updatenote/{noteId}": {
             "put": {
                 "tags": ["Update Notes"],
                 "description": "want to update, don't worry! it is very easy",
@@ -206,6 +206,15 @@
                         "in": "header",
                         "name": "Authorization",
                         "description": "Token for Authentication..! Please Enter a token along with bearer [bearer ]..",
+                        "schema": {
+                            "type": "string",
+                            "required": true
+                        }
+                    },
+                    {
+                        "in": "path",
+                        "name": "noteId",
+                        "description": "Enter Note Id",
                         "schema": {
                             "type": "string",
                             "required": true
@@ -240,7 +249,7 @@
                 }
             }
         },
-        "/deletenote": {
+        "/deletenote/{noteId}": {
             "delete": {
                 "tags": ["Delete Notes"],
                 "description": "want to delete, don't worry! it is very easy",
@@ -255,18 +264,16 @@
                         }
                     },
                     {
-                        "name": "Delete Notes",
-                        "in": "body",
-                        "description": "Delete notes easily",
+                        "in": "path",
+                        "name": "noteId",
+                        "description": "Delete notes easily by Id",
                         "schema": {
-                            "$ref": "#/definitions/deleteNote"
+                            "type": "string",
+                            "required": true
                         }
                     }
                 ],
                 "produces": ["application/json"],
-                "schema": {
-                    "$ref": "#/definitions/deleteNote"
-                },
                 "responses": {
                     "200": {
                         "description": "Note deleted successfully"
@@ -315,7 +322,7 @@
                 }
             }
         },
-        "/getnotebyId": {
+        "/getnotebyId/{noteId}": {
             "get": {
                 "tags": ["Get Note by Id"],
                 "description": "Want a specific notes. Ok! search by it's Id",
@@ -330,18 +337,16 @@
                         }
                     },
                     {
-                        "in": "body",
-                        "name": "Get Notes by Id",
+                        "in": "path",
+                        "name": "noteId",
                         "description": "your notes",
                         "schema": {
-                            "$ref": "#/definitions/getNotebyId"
+                            "type": "string",
+                            "required": true
                         }
                     }
                 ],
                 "produces": ["application/json"],
-                "schema": {
-                    "$ref": "#/definitions/getNotebyId"
-                },
                 "responses": {
                     "200": {
                         "description": "This Note is.."
@@ -436,10 +441,6 @@
         "updateNote": {
             "type": "object",
             "properties": {
-                "noteId": {
-                    "type": "string",
-                    "description": "id of the note"
-                },
                 "title": {
                     "type": "string",
                     "description": "Title of the Notes"
@@ -447,24 +448,6 @@
                 "description": {
                     "type": "string",
                     "description": "description of the Notes"
-                }
-            }
-        },
-        "deleteNote": {
-            "type": "object",
-            "properties": {
-                "noteId": {
-                    "type": "string",
-                    "description": "id of the note"
-                }
-            }
-        },
-        "getNotebyId": {
-            "type": "object",
-            "properties": {
-                "noteId": {
-                    "type": "string",
-                    "description": "id of the note"
                 }
             }
         }

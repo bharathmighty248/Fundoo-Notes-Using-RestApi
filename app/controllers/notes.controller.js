@@ -40,7 +40,7 @@ class Controller {
         try {
             const info = {
                 email: req.user.email,
-                noteId: req.body.noteId,
+                noteId: req.params.noteId,
                 title: req.body.title,
                 description: req.body.description
             }
@@ -70,7 +70,7 @@ class Controller {
         try {
             const info = {
                 email: req.user.email,
-                noteId: req.body.noteId
+                noteId: req.params.noteId
             }
             noteservice.deletenotes(info,(error) => {
                 if (error) {
@@ -124,7 +124,7 @@ class Controller {
         try {
             const info = {
                 email: req.user.email,
-                noteId: req.body.noteId
+                noteId: req.params.noteId
             }
             noteservice.getnotebyId(info,(error,data) => {
                 if (error) {
