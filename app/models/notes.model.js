@@ -45,16 +45,7 @@ class noteModel {
 
     updateNote = async (info, callback) => {
         try {
-            const userNotes = await notemodel.find({ email: info.email });
-            if (userNotes.length === 0) {
-                return callback(error,null);
-            } else {
-                const checkNotes = userNotes.filter((Element) => Element.id === info.noteId);
-                if (checkNotes.length === 0) {
-                    return callback(error,null);
-                }
-            }
-            const { noteId, title, description } = info;
+            const { title, description } = info;
             const updates = { title,description }
             if (title !== undefined) {
                 updates.title = title
@@ -62,10 +53,14 @@ class noteModel {
             if (description !== undefined) {
                 updates.description = description
             }
-            notemodel.findByIdAndUpdate(noteId, updates, { new: true })
+            notemodel.findOneAndUpdate({ _id:info.noteId,email:info.email }, updates, { new: true })
             .then(data => {
-                redisjs.clearCache(noteId);
-                return callback(null, data);
+                if (data) {
+                    redisjs.clearCache(info.noteId);
+                    return callback(null, data);
+                } else {
+                    return callback("This note doesn't exist", null);
+                }
             })
             .catch(err => {
                 return callback(err, null);
@@ -77,19 +72,14 @@ class noteModel {
 
     deleteNote = async (info, callback) => {
         try {
-            const userNotes = await notemodel.find({ email: info.email });
-            if (userNotes.length === 0) {
-                return callback(error,null);
-            } else {
-                const checkNotes = userNotes.filter((Element) => Element.id === info.noteId);
-                if (checkNotes.length === 0) {
-                    return callback(error,null);
-                }
-            }
-            notemodel.findByIdAndDelete(info.noteId)
+            notemodel.deleteOne({ _id:info.noteId,email: info.email })
             .then(data => {
-                redisjs.clearCache(info.noteId);
-                return callback(null, data);
+                if (data) {
+                    redisjs.clearCache(info.noteId);
+                    return callback(null, data);
+                } else {
+                    return callback("This note doesn't exist", null);
+                }
             })
             .catch(err => {
                 return callback(err, null);
@@ -122,19 +112,14 @@ class noteModel {
                 const data = JSON.parse(cachevalue);
                 return callback(null, data);
             }
-            const userNotes = await notemodel.find({ email: info.email });
-            if (userNotes.length === 0) {
-                return callback(error,null);
-            } else {
-                const checkNotes = userNotes.filter((Element) => Element.id === info.noteId);
-                if (checkNotes.length === 0) {
-                    return callback(error,null);
-                }
-            }
-            notemodel.findById(info.noteId)
+            notemodel.findOne({ _id:info.noteId, email: info.email })
             .then(data => {
-                redisjs.setData(info.noteId,JSON.stringify(data));
-                return callback(null, data);
+                if (data) {
+                    redisjs.setData(info.noteId,JSON.stringify(data));
+                    return callback(null, data);
+                } else {
+                    return callback("This note doesn't exist", null);
+                }
             })
             .catch(err => {
                 return callback(err, null);
