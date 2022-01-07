@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/bharathmighty248/Fundoo-Notes-Using-RestApi#readme",
   "dependencies": {
+    "amqplib": "^0.8.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.1",
     "dotenv": "^10.0.0",

@@ -24,6 +24,10 @@ const UserSchema = new mongoose.Schema(
         required: true,
         minlength: 6,
     },
+    verified: {
+        type: Boolean,
+        default: false
+    }
 },
     {
         timestamps: true,
@@ -56,8 +60,18 @@ class userModel {
         });
     };
 
+    confirmRegister = (data, callBack) => {
+        user.findOneAndUpdate({ email:data.email },{ verified: true }, (error,data) => {
+            if (error) {
+                return callBack(error, null);
+            } else {
+                return callBack(null, data);
+            }
+        })
+    };
+
     loginUser = (loginData, callBack) => {
-        user.findOne({ email: loginData.email }, (error, data) => {
+        user.findOne({ email: loginData.email,verified: true }, (error, data) => {
             if (data) {
                 bcrypt.compare(loginData.password, data.password, (error,validate) => {
                     if (!validate) {
@@ -77,7 +91,7 @@ class userModel {
     forgotpassword = (data, callBack) => {
         user.findOne({ email: data.email }, (error, data) => {
             if (data) {
-                nodemailer.sendEmail(data.email, (err, data) => {
+                nodemailer.sendResetEmail(data.email, (err, data) => {
                     if (err) {
                         return callBack(err, null);
                     } else {

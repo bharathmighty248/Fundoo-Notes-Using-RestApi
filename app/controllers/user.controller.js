@@ -39,7 +39,33 @@ class Controller {
                 data: null,
             });
         }
-    }
+    };
+
+    confirmRegister = (req,res) => {
+        try {
+            const data = {
+                token: req.params.token
+            };
+            userService.confirmRegister(data, (error) => {
+                if (error) {
+                    return res.status(409).json({
+                        success: false,
+                        message: 'error',
+                    });
+                } else {
+                    return res.status(200).json({
+                        success: true,
+                        message: "Email verified successfully"
+                    });
+                }
+            })
+        } catch (error) {
+            return res.status(500).json({
+                success: false,
+                message: "Internal error While Registering"
+            });
+        }
+    };
 
     login = (req, res) => {
         try {
@@ -58,7 +84,7 @@ class Controller {
                 if (error) {
                     return res.status(401).json({
                         success: false,
-                        message: 'Unable to login. Please enter correct info',
+                        message: 'Unable to login. Please confirm your Email first or Please enter correct info',
                     });
                 }
                 const token = jwt.getToken(data);
