@@ -22,7 +22,7 @@ describe("User Registration Api", () => {
         .send(registerUser)
         .end((err, res) => {
             res.should.have.status(200);
-            res.body.should.have.property("message").eql("User Registered");
+            res.body.should.have.property("message").eql("User Registered, Please verify your Email to continue..");
             res.body.should.have.property("success").eql(true);
             done();
         });
@@ -167,7 +167,7 @@ describe("User Login Api", () => {
         .send(data.login.incorrectEmail)
         .end((err, res) => {
             res.should.have.status(401);
-            res.body.should.have.property("message").eql("Unable to login. Please enter correct info");
+            res.body.should.have.property("message").eql("Unable to login. Please verify your Email first or Please enter correct info");
             res.body.should.have.property("success").eql(false);
             done();
         });
@@ -180,7 +180,7 @@ describe("User Login Api", () => {
         .send(data.login.incorrectPassword)
         .end((err, res) => {
             res.should.have.status(401);
-            res.body.should.have.property("message").eql("Unable to login. Please enter correct info");
+            res.body.should.have.property("message").eql("Unable to login. Please verify your Email first or Please enter correct info");
             res.body.should.have.property("success").eql(false);
             done();
         });
