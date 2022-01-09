@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
 const resetcodemodel = require('../app/models/resetcode.model');
+const logger = require('../config/logger');
 
 const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -22,6 +23,7 @@ class nodeMailer {
                 subject: "Your Password Reset Code",
                 text: `Use this code to reset your password: ${resetcode} `
             });
+            logger.info("Reset Mail sent");
             const code = new resetcodemodel({ email : details,resetcode });
             code.save()
             .then(data => {
@@ -31,6 +33,7 @@ class nodeMailer {
                 return callback(err, null);
             });
         } catch (error) {
+            logger.error("internal error");
             return callback(error, null);
         }
     };
@@ -49,7 +52,9 @@ class nodeMailer {
                 <button href="${link}"> <a href="${link}">Verify Email</a></button>
                 </b>`
             });
+            logger.info("verification email sent");
         } catch (error) {
+            logger.error("Internal error");
             return callback(error, null);
         }
     };
@@ -63,7 +68,9 @@ class nodeMailer {
                 text: `Hello ${details.firstName},
                 Thankyou for confirming your email. Now You can use Fundoo Notes Securely..`,
             });
+            logger.info("confirmation mail sent");
         } catch (error) {
+            logger.error("Internal error");
             return callback(error, null);
         }
     }

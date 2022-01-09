@@ -7,7 +7,7 @@ exports.dbConnection = () => {
     }).then(() => {
         logger.info("Successfully connected to the database");
     }).catch(err => {
-        logger.info('Could not connect to the database. Exiting now...', err);
+        logger.error('Could not connect to the database. Exiting now...', err);
         process.exit();
     });
 };

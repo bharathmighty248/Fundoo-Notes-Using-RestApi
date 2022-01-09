@@ -1,5 +1,6 @@
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const logger = require('../config/logger');
 
 passport.serializeUser((user, done) => {
     done(null, user);
@@ -20,6 +21,7 @@ passport.use(new GoogleStrategy(
             profile,
             token: accessToken
         };
+        logger.info("Google Authentication success");
         return callback(null, data);
     }
 ));

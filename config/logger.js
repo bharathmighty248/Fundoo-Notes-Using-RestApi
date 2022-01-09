@@ -19,7 +19,21 @@ const logger = createLogger({
             options: {
                 useUnifiedTopology: true
             },
-            collection: 'logger',
+            collection: 'Info.logger',
+            format: format.combine(format.timestamp(), format.json())
+        }),
+        new transports.File({
+            filename: 'error.log',
+            level: 'error',
+            format: format.combine(format.timestamp(), format.json())
+        }),
+        new transports.MongoDB({
+            level: 'error',
+            db: process.env.DB_URL,
+            options: {
+                useUnifiedTopology: true
+            },
+            collection: 'Error.logger',
             format: format.combine(format.timestamp(), format.json())
         })
     ]

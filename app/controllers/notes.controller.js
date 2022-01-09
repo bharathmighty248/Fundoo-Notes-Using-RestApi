@@ -1,4 +1,5 @@
 const noteservice = require('../service/notes.service');
+const logger = require('../../config/logger');
 
 class Controller {
     createnotes = (req, res) => {
@@ -16,11 +17,13 @@ class Controller {
             };
             noteservice.createnotes(info,(error, data) => {
                 if (error) {
+                    logger.error("error while creating note");
                     return res.status(400).json({
                         message: 'error while creating note',
                         success: false
                     });
                 } else {
+                    logger.info("Note created successfully");
                     return res.status(200).json({
                         message: "Note created successfully",
                         success: true,
@@ -33,6 +36,7 @@ class Controller {
                 }
             })
         } catch (error) {
+            logger.error("Internal server error");
             return res.status(500).json({
                 message: 'Internal server error',
                 success: false
@@ -50,11 +54,13 @@ class Controller {
             }
             noteservice.updatenotes(info,(error,data) => {
                 if (error) {
+                    logger.error("This note is not exist or this belongs to another user");
                     return res.status(400).json({
                         message: 'This note is not exist or this belongs to another user',
                         success: false
                     });
                 } else {
+                    logger.info("Note updated successfully");
                     return res.status(200).json({
                         message: "Note updated successfully",
                         success: true,
@@ -67,6 +73,7 @@ class Controller {
                 }
             });
         } catch (error) {
+            logger.error("Internal server error");
             return res.status(500).json({
                 message: 'Internal server error',
                 success: false
@@ -82,11 +89,13 @@ class Controller {
             }
             noteservice.deletenotes(info,(error) => {
                 if (error) {
+                    logger.error("This note is not exist or this belongs to another user");
                     return res.status(400).json({
                         message: 'This note is not exist or this belongs to another user',
                         success: false
                     });
                 } else {
+                    logger.info("Note deleted successfully");
                     return res.status(200).json({
                         message: "Note deleted successfully",
                         success: true
@@ -94,6 +103,7 @@ class Controller {
                 }
             });
         } catch (error) {
+            logger.error("Internal server error");
             return res.status(500).json({
                 message: 'Internal server error',
                 success: false
@@ -108,6 +118,7 @@ class Controller {
             }
             noteservice.getnotes(info,(error,data) => {
                 if (data.length === 0) {
+                    logger.error("User has not created any notes yet");
                     return res.status(207).json({
                         message: 'User has not created any notes yet',
                         success: true
@@ -121,6 +132,7 @@ class Controller {
                 }
             });
         } catch (error) {
+            logger.error("Internal server error");
             return res.status(500).json({
                 message: 'Internal server error',
                 success: false
@@ -136,6 +148,7 @@ class Controller {
             }
             noteservice.getnotebyId(info,(error,data) => {
                 if (error) {
+                    logger.error("This note is not exist or this belongs to another user");
                     return res.status(400).json({
                         message: 'This note is not exist or this belongs to another user',
                         success: false
@@ -149,6 +162,7 @@ class Controller {
                 }
             });
         } catch (error) {
+            logger.error("Internal server error");
             return res.status(500).json({
                 message: 'Internal server error',
                 success: false
