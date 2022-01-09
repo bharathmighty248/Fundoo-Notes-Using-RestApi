@@ -43,6 +43,17 @@ class userService {
                 return callback(null, data);
             }
         });
+    };
+
+    socialLogin = (info, callback) => {
+        userModel.socialLogin(info,(err, data) => {
+            if (err) {
+                return callback(err, null);
+            } else {
+                const token = jwtToken.getToken(data);
+                return callback(null, token);
+            }
+        })
     }
 
     forgotpassword = (user, callback) => {

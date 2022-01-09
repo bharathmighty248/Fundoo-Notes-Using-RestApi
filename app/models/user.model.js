@@ -16,17 +16,18 @@ const UserSchema = new mongoose.Schema(
     },
     email: {
         type: String,
-        required: true,
         unique: true,
     },
     password: {
         type: String,
-        required: true,
         minlength: 6,
     },
     verified: {
         type: Boolean,
         default: false
+    },
+    googleVerified: {
+        type: Boolean
     }
 },
     {
@@ -86,6 +87,26 @@ class userModel {
                 return callBack(error, null);
             }
         });
+    };
+
+    socialLogin = (userdata, callBack) => {
+        user.findOne({ email: userdata.email }, (error, data) => {
+            if (data) {
+                return callBack(null, data);
+            } else if (data === null) {
+                const newdata = new user({
+                    firstName: userdata.firstName,
+                    lastName:userdata.lastName,
+                    email: userdata.email,
+                    password: userdata.password,
+                    googleVerified: true
+                });
+                newdata.save();
+                return callBack(null, newdata);
+            } else {
+                return callBack(error, null);
+            }
+        })
     }
 
     forgotpassword = (data, callBack) => {

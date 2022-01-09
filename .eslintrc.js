@@ -47,6 +47,7 @@ module.exports = {
     'no-shadow': 0,
     'prefer-template':0,
     'prefer-regex-literals': 0,
-    'no-empty-pattern': 0
+    'no-empty-pattern': 0,
+    'prefer-destructuring':0
   },
 };

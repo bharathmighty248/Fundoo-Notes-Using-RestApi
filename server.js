@@ -1,5 +1,6 @@
 const express = require('express');
 require('dotenv').config();
+const passport = require('passport');
 const swaggerUI = require('swagger-ui-express');
 const swaggerDocument = require('./swagger/swagger.json');
 const dbConfig = require('./config/database.config');
@@ -16,6 +17,9 @@ dbConfig.dbConnection();
 app.get('/', (req,res) => {
     res.json({ message: "Welcome to Fundoo-Notes Application. Take notes quickly. Organize and keep track of all your notes." });
 });
+
+app.use(passport.initialize());
+require('./utilities/passport');
 
 require('./app/routes/user.routes')(app);
 require('./app/routes/notes.routes')(app);

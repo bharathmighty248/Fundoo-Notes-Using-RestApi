@@ -104,6 +104,37 @@ class Controller {
         }
     };
 
+    socialLogin = (req,res) => {
+        try {
+            const profile = req.user.profile;
+            const info = {
+                firstName: profile.name.givenName,
+                lastName: profile.name.familyName,
+                email: profile.emails[0].value,
+                password: null,
+            };
+            userService.socialLogin(info,(error, data) => {
+                if (error) {
+                    return res.status(403).json({
+                        success: false,
+                        message: 'Unauthenticated',
+                    });
+                } else {
+                    return res.status(200).json({
+                        success: true,
+                        message: "User logged in successfully",
+                        token:data,
+                    });
+                }
+            })
+        } catch (error) {
+            return res.status(500).json({
+                success: false,
+                message: 'Internal error while Login',
+            });
+        }
+    };
+
     forgotpassword = (req, res) => {
         try {
             const user = {
