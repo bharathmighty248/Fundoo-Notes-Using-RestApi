@@ -24,7 +24,11 @@ class Controller {
                     return res.status(200).json({
                         message: "Note created successfully",
                         success: true,
-                        data
+                        data : {
+                            email: data.email,
+                            title: data.title,
+                            description: data.description
+                        }
                     })
                 }
             })
@@ -54,7 +58,11 @@ class Controller {
                     return res.status(200).json({
                         message: "Note updated successfully",
                         success: true,
-                        data
+                        data : {
+                            email: data.email,
+                            title: data.title,
+                            description: data.description
+                        }
                     })
                 }
             });

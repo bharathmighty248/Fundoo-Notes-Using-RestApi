@@ -18,7 +18,7 @@ class Controller {
                     message: "Wrong Input"
                 })
             }
-            userService.registerUser(user, (error, data) => {
+            userService.registerUser(user, (error) => {
                 if (error) {
                     return res.status(409).json({
                         success: false,
@@ -27,8 +27,7 @@ class Controller {
                 } else {
                     return res.status(200).json({
                         success: true,
-                        message: "User Registered",
-                        data,
+                        message: "User Registered, Please verify your Email to continue.."
                     });
                 }
             });
@@ -84,14 +83,13 @@ class Controller {
                 if (error) {
                     return res.status(401).json({
                         success: false,
-                        message: 'Unable to login. Please confirm your Email first or Please enter correct info',
+                        message: 'Unable to login. Please verify your Email first or Please enter correct info',
                     });
                 }
                 const token = jwt.getToken(data);
                 return res.status(200).json({
                 success: true,
                 message: 'User logged in successfully',
-                data,
                 token,
                 });
             });
@@ -140,7 +138,7 @@ class Controller {
             const user = {
                 email: req.body.email,
             };
-            userService.forgotpassword(user, (error, data) => {
+            userService.forgotpassword(user, (error) => {
                 if (error) {
                     return res.status(404).json({
                         success: false,
@@ -149,16 +147,14 @@ class Controller {
                 } else {
                     return res.status(200).json({
                         success: true,
-                        message: "Reset code sent to your registered email..",
-                        data,
+                        message: "Reset code sent to your registered email.."
                     });
                 }
             });
         } catch (error) {
             return res.status(500).json({
                 success: false,
-                message: "Error While sending reset code to your email",
-                data: null,
+                message: "Error While sending reset code to your email"
             });
         }
     }
@@ -177,13 +173,13 @@ class Controller {
                     message: "Wrong Input"
                 })
             }
-            userService.resetpassword(resetInfo, (error, data) => {
+            userService.resetpassword(resetInfo, (error) => {
                 if (error) {
                     return res.status(401).json({
                         success: false,
                         message: 'Unable to reset password. Please enter correct info',
                     });
-                } else if (data) {
+                } else {
                     return res.status(200).json({
                         success: true,
                         message: 'password reset successfull',
@@ -193,8 +189,7 @@ class Controller {
         } catch (error) {
             return res.status(500).json({
                 success: false,
-                message: 'Internal error while reset password',
-                data: null
+                message: 'Internal error while reset password'
             });
         }
     };
