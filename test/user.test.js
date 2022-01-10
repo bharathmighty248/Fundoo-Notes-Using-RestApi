@@ -281,3 +281,30 @@ describe("Reset Password Api", () => {
         })
     });
 });
+
+describe("Email confirmation Api", () => {
+    it("WhenGiven_ProperDetails_ShouldReturn_EmailVerifiedSuccessfully", (done) => {
+        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZGMyNDAwMGVmODhlZDljNzk1MzEwNiIsImVtYWlsIjoiYmhhcmF0aHBhc3VtYXJ0aGkyNDhAZ21haWwuY29tIiwiaWF0IjoxNjQxODE3MDg4fQ.HTNcYTggI2T9al6VpDpxbioYXYQckglwqVP1Au4ZK1A"
+        chai
+        .request(server)
+        .get(`/confirmregister/${token}`)
+        .end((err,res) => {
+            res.should.have.status(200);
+            res.body.should.have.property("message").eql("Email verified successfully");
+            res.body.should.have.property("success").eql(true);
+            done();
+        })
+    });
+
+    it("WhenGiven_ImProperDetails_ShouldReturn_Error", () => {
+        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxY2FmODU1ODYzODEzMjkxZGI0N2Q3MCIsImVtYWlsIjoiYmhhcmF0aG1pZ2h0eTI0OEBnbWFpbC5jb20iLCJpYXQiOjE2NDExOTEyMDZ9.KHbCPR58XeHfHz87GJIf_RnsTt5oOVjnWPR9Mi_b3UU"
+        chai
+        .request(server)
+        .get(`/confirmregister/${token}`)
+        .end((err,res) => {
+            res.should.have.status(409);
+            res.body.should.have.property("message").eql("error");
+            res.body.should.have.property("success").eql(false);
+        })
+    });
+});
