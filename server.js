@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 require('dotenv').config();
 const passport = require('passport');
 const swaggerUI = require('swagger-ui-express');
@@ -7,6 +8,8 @@ const dbConfig = require('./config/database.config');
 const logger = require('./config/logger');
 
 const app = express();
+
+app.use(cors());
 
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
