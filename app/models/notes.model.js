@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const redisjs = require('../../utilities/redis');
 
 const noteSchema = mongoose.Schema(
     {
@@ -56,7 +55,6 @@ class noteModel {
             notemodel.findOneAndUpdate({ _id:info.noteId,email:info.email }, updates, { new: true })
             .then(data => {
                 if (data) {
-                    redisjs.clearCache(info.noteId);
                     return callback(null, data);
                 } else {
                     return callback("This note doesn't exist", null);
@@ -75,7 +73,6 @@ class noteModel {
             notemodel.deleteOne({ _id:info.noteId,email: info.email })
             .then(data => {
                 if (data) {
-                    redisjs.clearCache(info.noteId);
                     return callback(null, data);
                 } else {
                     return callback("This note doesn't exist", null);
@@ -107,15 +104,9 @@ class noteModel {
 
     getNotebyId = async (info, callback) => {
         try {
-            const cachevalue = await redisjs.redisNotebyId(info.noteId);
-            if (cachevalue) {
-                const data = JSON.parse(cachevalue);
-                return callback(null, data);
-            }
             notemodel.findOne({ _id:info.noteId, email: info.email })
             .then(data => {
                 if (data) {
-                    redisjs.setData(info.noteId,JSON.stringify(data));
                     return callback(null, data);
                 } else {
                     return callback("This note doesn't exist", null);

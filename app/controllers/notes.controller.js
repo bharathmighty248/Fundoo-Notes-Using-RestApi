@@ -1,4 +1,5 @@
 const noteservice = require('../service/notes.service');
+const redisjs = require('../../utilities/redis');
 const logger = require('../../config/logger');
 
 class Controller {
@@ -60,6 +61,7 @@ class Controller {
                         success: false
                     });
                 } else {
+                    redisjs.clearCache(info.noteId);
                     logger.info("Note updated successfully");
                     return res.status(200).json({
                         message: "Note updated successfully",
@@ -95,6 +97,7 @@ class Controller {
                         success: false
                     });
                 } else {
+                    redisjs.clearCache(info.noteId);
                     logger.info("Note deleted successfully");
                     return res.status(200).json({
                         message: "Note deleted successfully",
@@ -140,11 +143,20 @@ class Controller {
         }
     };
 
-    getnotebyId = (req,res) => {
+    getnotebyId = async (req,res) => {
         try {
             const info = {
                 email: req.user.email,
                 noteId: req.params.noteId
+            }
+            const cachevalue = await redisjs.redisNotebyId(info.noteId);
+            if (cachevalue) {
+                const data = JSON.parse(cachevalue);
+                return res.status(200).json({
+                    message: "This Note is..",
+                    success: true,
+                    data
+                })
             }
             noteservice.getnotebyId(info,(error,data) => {
                 if (error) {
@@ -154,7 +166,8 @@ class Controller {
                         success: false
                     });
                 } else {
-                    return res.status(200).json({
+                    redisjs.setData(info.noteId,JSON.stringify(data));
+                    return res.status(201).json({
                         message: "This Note is..",
                         success: true,
                         data
