@@ -214,7 +214,21 @@ describe("Get Note Api", () => {
 });
 
 describe("Get Note by Id Api", () => {
-    it("whenGiven_validToken_IfUserHasthatNotes_ShouldReturn_Notes", () => {
+    it("whenGiven_validToken_IfUserHasthatNotesonlyInDB_ShouldReturn_201", (done) => {
+        const token = data.createnote.validToken;
+        chai
+        .request(server)
+        .get("/getnotebyId/61d2b42c6eddca632474bc81")
+        .set({ authorization: token })
+        .end((err, res) => {
+            res.should.have.status(201);
+            res.body.should.have.property("message").eql("This Note is..");
+            res.body.should.have.property("success").eql(true);
+            done();
+        });
+    });
+
+    it("whenGiven_validToken_IfUserHasthatNotesalreadyInRedisCache_ShouldReturn_200", (done) => {
         const token = data.createnote.validToken;
         chai
         .request(server)
@@ -224,10 +238,11 @@ describe("Get Note by Id Api", () => {
             res.should.have.status(200);
             res.body.should.have.property("message").eql("This Note is..");
             res.body.should.have.property("success").eql(true);
+            done();
         });
     });
 
-    it("whenGiven_InvalidToken_ShouldReturn_Unauthorised", () => {
+    it("whenGiven_InvalidToken_ShouldReturn_Unauthorised", (done) => {
         const token = data.createnote.invalidToken;
         chai
         .request(server)
@@ -237,10 +252,11 @@ describe("Get Note by Id Api", () => {
             res.should.have.status(401);
             res.body.should.have.property("message").eql("Authorisation failed, Invalid user");
             res.body.should.have.property("success").eql(false);
+            done();
         });
     });
 
-    it("whenGiven_validToken_IfUserdoesn'tHaveThatNotes_ShouldReturn_Notedoesn'tExist", () => {
+    it("whenGiven_validToken_IfUserdoesn'tHaveThatNotes_ShouldReturn_Notedoesn'tExist", (done) => {
         const token = data.createnote.validToken;
         chai
         .request(server)
@@ -250,6 +266,7 @@ describe("Get Note by Id Api", () => {
             res.should.have.status(400);
             res.body.should.have.property("message").eql("This note is not exist or this belongs to another user");
             res.body.should.have.property("success").eql(false);
+            done();
         });
     });
 });
