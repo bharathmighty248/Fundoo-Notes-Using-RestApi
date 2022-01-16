@@ -4,7 +4,7 @@ class Service {
     createnotes = (info, callback) => {
         noteModel.createNote(info, (err,data) => {
             if (err) {
-                return callback(error, null);
+                return callback(err, null);
             } else {
                 return callback(null, data);
             }

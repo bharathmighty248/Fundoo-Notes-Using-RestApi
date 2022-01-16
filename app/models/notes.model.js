@@ -121,4 +121,7 @@ class noteModel {
     };
 }
 
-module.exports = new noteModel();
+module.exports = {
+    noteModel: new noteModel(),
+    notemodel
+}

@@ -26,6 +26,7 @@ require('./utilities/passport');
 
 require('./app/routes/user.routes')(app);
 require('./app/routes/notes.routes')(app);
+require('./app/routes/labels.routes')(app);
 
 app.listen(process.env.PORT, () => {
     logger.info("Server is listening on port 3000");
