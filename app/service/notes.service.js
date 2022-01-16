@@ -1,4 +1,4 @@
-const noteModel = require('../models/notes.model');
+const noteModel = require('../models/notes.model').noteModel;
 
 class Service {
     createnotes = (info, callback) => {

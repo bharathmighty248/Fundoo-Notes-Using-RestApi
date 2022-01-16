@@ -283,7 +283,7 @@ describe("Reset Password Api", () => {
 });
 
 describe("Email confirmation Api", () => {
-    it("WhenGiven_ProperDetails_ShouldReturn_EmailVerifiedSuccessfully", (done) => {
+    it("WhenGiven_ProperDetails_ShouldReturn_EmailVerifiedSuccessfully", () => {
         const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZGMyNDAwMGVmODhlZDljNzk1MzEwNiIsImVtYWlsIjoiYmhhcmF0aHBhc3VtYXJ0aGkyNDhAZ21haWwuY29tIiwiaWF0IjoxNjQxODE3MDg4fQ.HTNcYTggI2T9al6VpDpxbioYXYQckglwqVP1Au4ZK1A"
         chai
         .request(server)
@@ -292,7 +292,6 @@ describe("Email confirmation Api", () => {
             res.should.have.status(200);
             res.body.should.have.property("message").eql("Email verified successfully");
             res.body.should.have.property("success").eql(true);
-            done();
         })
     });
 
