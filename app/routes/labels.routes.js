@@ -3,4 +3,5 @@ const auth = require('../../utilities/auth');
 
 module.exports = (app) => {
     app.post('/addlabel',auth.authentication, labels.addLabel);
+    app.put('/updatelabel',auth.authentication, labels.updateLabel);
 }

@@ -50,7 +50,27 @@ class labelModel {
                 })
             }
         } catch (error) {
-            console.log(error);
+            return callback("Something went wrong", null);
+        }
+    };
+
+    updateLabel = async (info, callback) => {
+        try {
+            const checkLabel = await labelmodel.find({ userId: info.userId,labelName: info.labelName });
+            if (checkLabel.length !== 0) {
+                if (info.noteId !== null) {
+                    await labelmodel.findOneAndUpdate({ userId: info.userId,labelName: info.labelName },{ $pull: { noteId: info.noteId } });
+                }
+                if (info.labelName && info.newLabelName !== null) {
+                    await labelmodel.findOneAndUpdate({ userId: info.userId,labelName: info.labelName },{ labelName: info.newLabelName });
+                    await labelmodel.findOneAndDelete({ userId: info.userId,labelName: info.newLabelName,noteId:{ $exists: true, $size: 0 } });
+                }
+                await labelmodel.findOneAndDelete({ userId: info.userId,labelName: info.labelName,noteId:{ $exists: true, $size: 0 } });
+                return callback(null, true);
+            } else {
+                return callback("Label doesn't Exist", null);
+            }
+        } catch (error) {
             return callback("Something went wrong", null);
         }
     }
