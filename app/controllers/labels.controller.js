@@ -117,6 +117,37 @@ class Controller {
                 success: false
             })
         }
+    };
+
+    getLabelbyName = (req,res) => {
+        try {
+            const info = {
+                userId: req.user.id,
+                labelName: req.params.labelName
+            }
+            labelservice.getLabelbyName(info, (error, data) => {
+                if (error) {
+                    return res.status(400).json({
+                        message: error,
+                        success: false
+                    });
+                } else {
+                    return res.status(200).json({
+                        message: "Label details",
+                        success: true,
+                        data : {
+                            labelName: data.labelName,
+                            noteId: data.noteId
+                        }
+                    })
+                }
+            })
+        } catch (error) {
+            return res.status(500).json({
+                message: 'Internal server error',
+                success: false
+            })
+        }
     }
 }
 

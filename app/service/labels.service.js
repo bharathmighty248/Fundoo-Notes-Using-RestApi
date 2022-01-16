@@ -39,6 +39,16 @@ class Service {
                 return callback(null, data);
             }
         })
+    };
+
+    getLabelbyName = (info, callback) => {
+        labelmodel.getLabelbyName(info, (error,data) => {
+            if (error) {
+                return callback(error, null);
+            } else {
+                return callback(null, data);
+            }
+        })
     }
 }
 
