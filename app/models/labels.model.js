@@ -91,6 +91,20 @@ class labelModel {
         } catch (error) {
             return callback("Something went wrong", null);
         }
+    };
+
+    getLabels = (info, callback) => {
+        try {
+            labelmodel.find({ userId: info.userId },(error, data) => {
+                if (data) {
+                    return callback(null, data);
+                } else {
+                    return callback(error, null);
+                }
+            });
+        } catch (error) {
+            return callback(error, null);
+        }
     }
 }
 

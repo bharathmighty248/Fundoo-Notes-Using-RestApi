@@ -29,6 +29,16 @@ class Service {
                 return callback(null, data);
             }
         })
+    };
+
+    getLabels = (info, callback) => {
+        labelmodel.getLabels(info, (error,data) => {
+            if (error) {
+                return callback(error, null);
+            } else {
+                return callback(null, data);
+            }
+        })
     }
 }
 

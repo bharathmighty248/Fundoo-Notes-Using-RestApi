@@ -90,6 +90,33 @@ class Controller {
                 success: false
             })
         }
+    };
+
+    getLabels = (req,res) => {
+        try {
+            const info = {
+                userId : req.user.id
+            }
+            labelservice.getLabels(info,(error,data) => {
+                if (data.length === 0) {
+                    return res.status(207).json({
+                        message: 'User has not created any Labels yet',
+                        success: true
+                    });
+                } else if (data.length !== 0) {
+                    return res.status(200).json({
+                        success: true,
+                        message: "user Labels",
+                        data
+                    })
+                }
+            });
+        } catch (error) {
+            return res.status(500).json({
+                message: 'Internal server error',
+                success: false
+            })
+        }
     }
 }
 

@@ -5,4 +5,5 @@ module.exports = (app) => {
     app.post('/addlabel',auth.authentication, labels.addLabel);
     app.put('/updatelabel',auth.authentication, labels.updateLabel);
     app.delete('/deletelabel/:labelName',auth.authentication, labels.deleteLabel);
+    app.get('/getlabels', auth.authentication, labels.getLabels);
 }
