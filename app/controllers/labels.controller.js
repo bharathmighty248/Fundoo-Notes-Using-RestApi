@@ -62,6 +62,34 @@ class Controller {
                 success: false
             })
         }
+    };
+
+    deleteLabel = (req, res) => {
+        try {
+            const info = {
+                userId : req.user.id,
+                email: req.user.email,
+                labelName : req.params.labelName,
+            }
+            labelservice.deleteLabel(info, (error) => {
+                if (error) {
+                    return res.status(400).json({
+                        message: error,
+                        success: false
+                    });
+                } else {
+                    return res.status(200).json({
+                        message: "Label Deleted successfully",
+                        success: true,
+                    })
+                }
+            })
+        } catch (error) {
+            return res.status(500).json({
+                message: 'Internal server error',
+                success: false
+            })
+        }
     }
 }
 

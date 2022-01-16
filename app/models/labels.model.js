@@ -73,6 +73,24 @@ class labelModel {
         } catch (error) {
             return callback("Something went wrong", null);
         }
+    };
+
+    deleteLabel = (info, callback) => {
+        try {
+            labelmodel.findOneAndDelete({ userId: info.userId,labelName: info.labelName })
+                .then(data => {
+                    if (data) {
+                        return callback(null, data);
+                    } else {
+                        return callback("This Label doesn't exist", null);
+                    }
+                })
+                .catch(error => {
+                    return callback(error + "Something went wrong", null);
+                });
+        } catch (error) {
+            return callback("Something went wrong", null);
+        }
     }
 }
 

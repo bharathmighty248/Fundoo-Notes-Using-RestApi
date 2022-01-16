@@ -19,6 +19,16 @@ class Service {
                 return callback(null, data);
             }
         })
+    };
+
+    deleteLabel = (info, callback) => {
+        labelmodel.deleteLabel(info, (error,data) => {
+            if (error) {
+                return callback(error, null);
+            } else {
+                return callback(null, data);
+            }
+        })
     }
 }
 
