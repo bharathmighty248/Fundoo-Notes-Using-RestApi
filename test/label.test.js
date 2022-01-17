@@ -215,3 +215,33 @@ describe("Delete Label Api", () => {
         });
     });
 });
+
+describe("Get Labels Api", () => {
+    it("whenGiven_invalidToken_ShouldReturn_Authorisation failed,Invalid user", (done) => {
+        const token = data.token.invalidToken;
+        chai
+        .request(server)
+        .get("/getlabels")
+        .set({ authorization: token })
+        .end((err, res) => {
+            res.should.have.status(401);
+            res.body.should.have.property("message").eql("Authorisation failed, Invalid user");
+            res.body.should.have.property("success").eql(false);
+            done();
+        });
+    });
+
+    it("whenGiven_validToken_ShouldReturn_AllLabels", (done) => {
+        const token = data.token.validToken;
+        chai
+        .request(server)
+        .get("/getlabels")
+        .set({ authorization: token })
+        .end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.have.property("message").eql("user Labels");
+            res.body.should.have.property("success").eql(true);
+            done();
+        });
+    });
+});
