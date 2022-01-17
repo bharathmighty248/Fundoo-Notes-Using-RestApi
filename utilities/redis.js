@@ -10,6 +10,11 @@ class Redis {
         return cachevalue;
     };
 
+    redisLabelbyName = (key) => {
+        const cachevalue = client.get(key);
+        return cachevalue;
+    }
+
     setData = (key,redisData) => {
         client.set(key,redisData);
     };

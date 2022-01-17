@@ -1,4 +1,5 @@
 const labelservice = require('../service/labels.service');
+const redisjs = require('../../utilities/redis');
 
 class Controller {
     addLabel = (req, res) => {
@@ -50,6 +51,7 @@ class Controller {
                         success: false
                     });
                 } else {
+                    redisjs.clearCache(info.labelName);
                     return res.status(200).json({
                         message: "Label Updated successfully",
                         success: data,
@@ -78,6 +80,7 @@ class Controller {
                         success: false
                     });
                 } else {
+                    redisjs.clearCache(info.labelName);
                     return res.status(200).json({
                         message: "Label Deleted successfully",
                         success: true,
@@ -119,11 +122,23 @@ class Controller {
         }
     };
 
-    getLabelbyName = (req,res) => {
+    getLabelbyName = async (req,res) => {
         try {
             const info = {
                 userId: req.user.id,
                 labelName: req.params.labelName
+            }
+            const cachevalue = await redisjs.redisLabelbyName(info.labelName);
+            if (cachevalue) {
+                const data = JSON.parse(cachevalue);
+                return res.status(200).json({
+                    message: "Label details",
+                    success: true,
+                    data : {
+                        labelName: data.labelName,
+                        noteId: data.noteId
+                    }
+                })
             }
             labelservice.getLabelbyName(info, (error, data) => {
                 if (error) {
@@ -132,7 +147,8 @@ class Controller {
                         success: false
                     });
                 } else {
-                    return res.status(200).json({
+                    redisjs.setData(info.labelName,JSON.stringify(data));
+                    return res.status(201).json({
                         message: "Label details",
                         success: true,
                         data : {
