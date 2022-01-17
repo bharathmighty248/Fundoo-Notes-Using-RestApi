@@ -123,4 +123,7 @@ class labelModel {
     }
 }
 
-module.exports = new labelModel();
+module.exports = {
+    labelModel: new labelModel(),
+    labelmodel
+};

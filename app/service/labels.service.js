@@ -1,4 +1,4 @@
-const labelmodel = require('../models/labels.model');
+const labelmodel = require('../models/labels.model').labelModel;
 
 class Service {
     addLabel = (info, callback) => {

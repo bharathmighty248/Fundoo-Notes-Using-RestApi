@@ -2,6 +2,7 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../server');
 const data = require('./label.data.json');
+const labelmodel = require('../app/models/labels.model').labelmodel;
 
 chai.should();
 
@@ -158,6 +159,57 @@ describe("update Label Api", () => {
         .end((err, res) => {
             res.should.have.status(200);
             res.body.should.have.property("message").eql("Label Updated successfully");
+            res.body.should.have.property("success").eql(true);
+            done();
+        });
+    });
+});
+
+describe("Delete Label Api", () => {
+    it("whenGiven_invalidToken_ShouldReturn_Authorisation failed,Invalid user", (done) => {
+        const token = data.token.invalidToken;
+        chai
+        .request(server)
+        .delete("/deletelabel/updated first Label")
+        .set({ authorization: token })
+        .end((err, res) => {
+            res.should.have.status(401);
+            res.body.should.have.property("message").eql("Authorisation failed, Invalid user");
+            res.body.should.have.property("success").eql(false);
+            done();
+        });
+    });
+
+    it("whenGiven_validToken_ButWrongLabelName_ShouldReturn_LabelDoesntExist", (done) => {
+        const token = data.token.validToken;
+        chai
+        .request(server)
+        .delete("/deletelabel/first Label")
+        .set({ authorization: token })
+        .end((err, res) => {
+            res.should.have.status(400);
+            res.body.should.have.property("message").eql("This Label doesn't exist");
+            res.body.should.have.property("success").eql(false);
+            done();
+        });
+    });
+
+    it("whenGiven_validToken_ShouldReturn_Labeldeleted", (done) => {
+        const token = data.token.validToken;
+        const label = new labelmodel({
+            userId : "61caf855863813291db47d70",
+            email: "bharathmighty248@gmail.com",
+            labelName : "first Label",
+            noteId : "61d2b661b083bb692793ced5"
+        });
+        label.save();
+        chai
+        .request(server)
+        .delete(`/deletelabel/first Label`)
+        .set({ authorization: token })
+        .end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.have.property("message").eql("Label Deleted successfully");
             res.body.should.have.property("success").eql(true);
             done();
         });
