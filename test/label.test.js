@@ -245,3 +245,47 @@ describe("Get Labels Api", () => {
         });
     });
 });
+
+describe("GetLabelbyName Api", () => {
+    it("whenGiven_invalidToken_ShouldReturn_Authorisation failed,Invalid user", (done) => {
+        const token = data.token.invalidToken;
+        chai
+        .request(server)
+        .get("/getlabelbyname/fifth Label")
+        .set({ authorization: token })
+        .end((err, res) => {
+            res.should.have.status(401);
+            res.body.should.have.property("message").eql("Authorisation failed, Invalid user");
+            res.body.should.have.property("success").eql(false);
+            done();
+        });
+    });
+
+    it("whenGiven_validToken_ButlabeldoesntExist_ShouldReturn_Same", (done) => {
+        const token = data.token.validToken;
+        chai
+        .request(server)
+        .get("/getlabelbyname/third Label")
+        .set({ authorization: token })
+        .end((err, res) => {
+            res.should.have.status(400);
+            res.body.should.have.property("message").eql("This Label doesn't exist");
+            res.body.should.have.property("success").eql(false);
+            done();
+        });
+    });
+
+    it("whenGiven_validToken_IflabelExist_ShouldReturn_Label", (done) => {
+        const token = data.token.validToken;
+        chai
+        .request(server)
+        .get("/getlabelbyname/fifth Label")
+        .set({ authorization: token })
+        .end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.have.property("message").eql("Label details");
+            res.body.should.have.property("success").eql(true);
+            done();
+        });
+    });
+});
